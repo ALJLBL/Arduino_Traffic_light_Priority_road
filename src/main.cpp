@@ -17,7 +17,6 @@ void setup() {
 }
 
 void loop() {
-  
-}
-void loop() {
+  unsigned data = 0;
+  can_send(0x100, data);
 }
