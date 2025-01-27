@@ -1,4 +1,8 @@
-#include <can.h>
+#include "can.h"
+
+MCP_CAN CAN(10);
+int pinCan = 2;
+int g_recvFlag = 0;
 
 // CAN初期化
 void canInit() {
@@ -24,7 +28,7 @@ void recvHandler() {
 }
 
 // 受信したデータを保存
-void can_recv(unsigned long* id, unsigned char* data, unsigned long* time) {
+bool can_recv(unsigned long* id, unsigned char* data, unsigned long* time) {
     if(g_recvFlag) {
         g_recvFlag = 0;
         unsigned char data_recv[8];
@@ -34,7 +38,23 @@ void can_recv(unsigned long* id, unsigned char* data, unsigned long* time) {
             *data = data_recv[1];
             // 受信時刻を保存
             *time = millis();
+            // 受信データをシリアルモニタに表示
+            Serial.print("Recv from 0x100 : ");
+            Serial.println(*data);
+            return true;
+        } else {
+            Serial.println("CAN recv Error !!!");
+            return false;
         }
     }
 }
 
+// CAN送信
+void can_send(unsigned long id, unsigned char data) {
+    if(CAN.sendMsgBuf(0x100, 1, &data) == CAN_OK) {
+      Serial.print("Send to 0x100 : ");
+      Serial.println(data);
+    } else {
+      Serial.println("Send to 0x100 Error !!!");
+    }
+}
