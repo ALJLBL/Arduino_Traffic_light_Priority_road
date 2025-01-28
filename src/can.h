@@ -11,6 +11,10 @@ extern int pinCan;
 extern bool g_recvFlag;     // 受信フラグ
 extern bool g_send_flag;    // 送信フラグ
 extern uint8_t g_err_status;    // エラーステータス
+extern unsigned long id_recv;    // 受信ID
+extern unsigned long id_send;    // 送信ID
+extern unsigned char data_recv;  // 受信データ
+extern unsigned long time_recv;  // 受信時刻
 
 //===========================================================//
 //==================関数プロトタイプ宣言=======================//

@@ -31,6 +31,7 @@ void canInit() {
 // CAN受信割り込みハンドラ
 void recvHandler() {
   g_recvFlag = 1;
+  can_recv(&id_recv, &data_recv, &time_recv, 1);
 }
 
 // 受信したデータを保存
@@ -50,7 +51,10 @@ bool can_recv(unsigned long* id, unsigned char* data, unsigned long* time, uint8
                     // 受信データを保存
                     *data = data_recv[position];
                     // 受信確認フレームを送信
-                    can_send(0x104, 0);
+                    if (data_recv[3] == 1) {
+                        delay(100);
+                        can_send(0x104, 0);
+                    }
                     // 受信時刻を保存
                     *time = millis();
                     // 受信データをシリアルモニタに表示
@@ -73,7 +77,7 @@ bool can_recv(unsigned long* id, unsigned char* data, unsigned long* time, uint8
 // CAN送信
 void can_send(unsigned long id, unsigned char data) {
     // 送信するdataのサイズを確認
-    uint8_t len = sizeof(data);;
+    uint8_t len = sizeof(data);
     // 送信フラグが立っている場合、CAN送信
     if(CAN.sendMsgBuf(id, len, &data) == CAN_OK) {
         Serial.print("Send to 0x");
@@ -81,7 +85,7 @@ void can_send(unsigned long id, unsigned char data) {
         Serial.print(" : ");
         Serial.println(data);
     } else {
-        Serial.println("Send to 0x");
+        Serial.print("Send to 0x");
         Serial.print(id, HEX);
         Serial.println(" Error !!!");
     }
