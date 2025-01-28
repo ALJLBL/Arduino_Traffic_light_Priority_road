@@ -18,4 +18,4 @@ extern bool g_lcd_flag;    // LCDフラグ
 void timerInit();
 void timerHandler();
 
-#endif // TIMER_H
+#endif
