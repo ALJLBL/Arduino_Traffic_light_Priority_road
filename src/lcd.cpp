@@ -3,9 +3,47 @@
 
 rgb_lcd lcd;
 
+
+
 void lcd_init() {
     lcd.begin(16, 2);
     lcd.setRGB(255, 255, 255);
+    byte upArrow[8] = {
+        0b00100,
+        0b01110,
+        0b10101,
+        0b00100,
+        0b00100,
+        0b00100,
+        0b00000,
+        0b00000
+    };
+
+    byte leftArrow[8] = {
+        0b00000,
+        0b00000,
+        0b00100,
+        0b01000,
+        0b11111,
+        0b01000,
+        0b00100,
+        0b00000
+    };
+
+    byte rughtArrow[8] = {
+        0b00000,
+        0b00000,
+        0b00100,
+        0b00010,
+        0b11111,
+        0b00010,
+        0b00100,
+        0b00000
+    };
+
+    lcd.createChar(0, upArrow);
+    lcd.createChar(1, leftArrow);
+    lcd.createChar(2, rughtArrow);
 }
 
 // LCD 更新関数
@@ -24,6 +62,12 @@ void updateLCD(uint8_t status) {
             case 1:
                 // バックライトを緑に
                 lcd.setRGB(0, 255, 0);
+                lcd.setCursor(0, 0);
+                lcd.write(byte(1));
+                lcd.setCursor(1, 0);
+                lcd.write(byte(0));
+                lcd.setCursor(2, 0);
+                lcd.write(byte(2));
                 break;
             case 2:
                 // バックライトを黄色に
