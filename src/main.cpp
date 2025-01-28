@@ -3,14 +3,17 @@
 #include <can.h>
 #include <timer.h>
 #include <err.h>
+#include <light.h>
+#include <serial.h>
 
 
 //===========================================================//
 //========================変数宣言============================//
 //===========================================================//
 unsigned long id_recv;    // 受信ID
+unsigned long id_send = 0x104;  // 送信ID
 unsigned char data_recv;  // 受信データ
-unsigned char data_send;  // 送信データ
+unsigned char data_send = 1;  // 送信データ
 unsigned long time_recv;  // 受信時刻
 
 
@@ -19,7 +22,7 @@ unsigned long time_recv;  // 受信時刻
 //===========================================================//
 void setup() {
   // シリアル通信初期化
-  Serial.begin(9600);
+  serialInit();
 
   // CAN初期化
   canInit();
@@ -36,20 +39,22 @@ void setup() {
 //======================MAIN LOOP============================//
 //===========================================================//
 void loop() {
+  // int serialData = serialRead();
+  // if (serialData != -1) {
+  //   data_send = (unsigned char)serialData;
+  // }
+
   // CAN送信
-  can_send(0x100, g_err_status);
+  // if (g_send_flag) {
+  //   can_send(0x104, data_send);
+  // }
 
   // CAN受信
   can_recv(&id_recv, &data_recv, &time_recv, 0);
 
-  
-
   // LCD更新 - タイマーフラグに基づいて更新
-  if (g_lcd_flag) {
-    g_lcd_flag = false;
-    updateLCD(data_recv);
-  }
+  updateLCD(data_recv);
 
   // エラーチェック
-  err_check(time_recv, &data_recv);
+  // err_check(time_recv, &data_recv);
 }
