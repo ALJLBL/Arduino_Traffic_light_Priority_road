@@ -4,10 +4,13 @@
 rgb_lcd lcd;
 
 
-
+//===========================================================//
+//========================関数定義============================//
+//===========================================================//
 void lcd_init() {
     lcd.begin(16, 2);
-    lcd.setRGB(255, 255, 255);
+    lcd.setRGB(255, 0, 0);
+    
     byte upArrow[8] = {
         0b00100,
         0b01110,
@@ -62,11 +65,13 @@ void updateLCD(uint8_t status) {
             case 1:
                 // バックライトを緑に
                 lcd.setRGB(0, 255, 0);
-                lcd.setCursor(0, 0);
+                lcd.setCursor(6, 0);
                 lcd.write(byte(1));
-                lcd.setCursor(1, 0);
+                lcd.setCursor(7, 0);
                 lcd.write(byte(0));
-                lcd.setCursor(2, 0);
+                lcd.setCursor(8, 0);
+                lcd.write(byte(0));
+                lcd.setCursor(9, 0);
                 lcd.write(byte(2));
                 break;
             case 2:
