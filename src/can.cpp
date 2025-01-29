@@ -1,5 +1,9 @@
 #include <can.h>
 
+
+//===========================================================//
+//========================変数宣言============================//
+//===========================================================//
 MCP_CAN CAN(10);
 int pinCan = 2;
 int pinLight = A0;
@@ -7,6 +11,10 @@ bool g_recvFlag = 0;
 bool g_recvFlag_err = 0;
 uint8_t g_err_status = 0;
 
+
+//===========================================================//
+//========================関数定義============================//
+//===========================================================//
 // CAN初期化
 void canInit() {
     // CAN割り込み
@@ -38,7 +46,7 @@ void recvHandler() {
 bool can_recv(unsigned long* id, unsigned char* data, unsigned long* time, uint8_t position) {
     bool err_flag = false;  // エラーフラグ
     // 受信フラグが立っている場合、CAN受信
-    if(digitalRead(pinCan) == LOW || g_recvFlag) {
+    //if(digitalRead(pinCan) == LOW || g_recvFlag) {
         g_recvFlag = 0;
 
         unsigned char data_recv[8]; // 8個のunsigned char型の要素を持つ配列を定義
@@ -70,7 +78,7 @@ bool can_recv(unsigned long* id, unsigned char* data, unsigned long* time, uint8
                 break;
             }
         }
-    }
+    //}
     return err_flag;
 }
 
